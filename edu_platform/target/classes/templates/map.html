@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Hello, World</title>
+    <style type="text/css">
+        /*html{height:100%}*/
+        /*body{height:100%;margin:0px;padding:0px}*/
+
+        #container{
+            /*height: 100%;*/
+            width: 60%;
+            float: right;
+            margin-top:35px;
+            margin-right: 20px;
+        }
+
+        .my-map-table{
+            width: 35%;
+            margin-top:0px;
+            margin-left: 15px;
+            margin-right: 10px;
+        }
+
+    </style>
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="xray/images/favicon.ico" />
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="xray/css/bootstrap.min.css">
+    <!-- Typography CSS -->
+    <link rel="stylesheet" href="xray/css/typography.css">
+    <!-- Style CSS -->
+    <link rel="stylesheet" href="xray/css/style.css">
+    <!-- Responsive CSS -->
+    <link rel="stylesheet" href="xray/css/responsive.css">
+    <!--  baidu map api  -->
+    <script type="text/javascript" src="https://api.map.baidu.com/api?v=1.0&type=webgl&ak=2COzFaICuIyVj7V3VetKfmdRVnX8BhVr"></script>
+    <!--提前引用jquery-->
+    <script src="xray/js/jquery.min.js"></script>
+
+    <style>
+        .my-mouse-img {
+            position: absolute;
+            z-index: 999;
+        }
+    </style>
+
+</head>
+
+<body>
+<img class="my-mouse-img" src="imgs/mouse-logo.jpg" alt="" width="60px">
+<script>
+    document.addEventListener('mousemove', function (e) {
+        //鼠标只要移动,就会触发事件
+        var x = e.pageX;
+        var y = e.pageY;
+        var pic = document.querySelector('img');
+        pic.style.left = x-20+'px';
+        pic.style.top = y-40+'px';
+    })
+</script>
+
+
+<!-- loader Start -->
+
+<div id="loading">
+    <div id="loading-center">
+    </div>
+</div>
+<!-- loader END -->
+
+<div class="wrapper">
+<!--侧栏-->
+    <div class="iq-sidebar">
+        <div class="iq-sidebar-logo d-flex justify-content-between">
+            <a href="/agency-chart">
+                <img src="xray/images/logo.png" class="img-fluid" alt="">
+                <span>XRay</span>
+            </a>
+            <div class="iq-menu-bt-sidebar">
+                <div class="iq-menu-bt align-self-center">
+                    <div class="wrapper-menu">
+                        <div class="main-circle"><i class="ri-more-fill"></i></div>
+                        <div class="hover-circle"><i class="ri-more-2-fill"></i></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="sidebar-scrollbar">
+            <nav class="iq-sidebar-menu">
+                <ul class="iq-menu">
+                    <li>
+                        <a href="/agency-chart" class="iq-waves-effect"><i class="ri-hospital-fill"></i><span>首页图表</span></a>
+                    </li>
+                    <li>
+                        <a href="/map" class="iq-waves-effect"><i class="ri-hospital-fill"></i><span>搜索定位</span></a>
+                    </li>
+                    <li>
+                        <a href="/agency-table" class="iq-waves-effect"><i class="ri-home-8-fill"></i><span>查看所有机构</span></a>
+                    </li>
+                    <li>
+                        <a href="/report" class="iq-waves-effect"><i class="ri-briefcase-4-fill"></i><span>民意调查</span></a>
+                    </li>
+                    <li>
+                        <a href="/personcenter" class="iq-waves-effect"><i class="ri-group-fill"></i><span>个人中心</span></a>
+                    </li>
+                </ul>
+            </nav>
+            <div class="p-3"></div>
+        </div>
+    </div>
+
+    <div id="content-page" class="content-page">
+<!-- 顶栏 TOP Nav Bar -->
+        <div class="iq-top-navbar">
+            <div class="iq-navbar-custom">
+                <div class="iq-sidebar-logo">
+                    <div class="top-logo">
+                        <a href="/agency-chart" class="logo">
+                            <img src="xray/images/logo.png" class="img-fluid" alt="">
+                            <span>XRay</span>
+                        </a>
+                    </div>
+                </div>
+                <nav class="navbar navbar-expand-lg navbar-light p-0">
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                        <i class="ri-menu-3-line"></i>
+                    </button>
+                    <div class="iq-menu-bt align-self-center">
+                        <div class="wrapper-menu">
+                            <div class="main-circle"><i class="ri-more-fill"></i></div>
+                            <div class="hover-circle"><i class="ri-more-2-fill"></i></div>
+                        </div>
+                    </div>
+                    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                        <ul class="navbar-nav ml-auto navbar-list">
+                            <li class="nav-item">
+                                <a class="search-toggle iq-waves-effect language-title" href="#"><img src="xray/images/small/flag-01.png" alt="img-flaf" class="img-fluid mr-1" style="height: 16px; width: 16px;" /> English <i class="ri-arrow-down-s-line"></i></a>
+                                <div class="iq-sub-dropdown">
+                                    <a class="iq-sub-card" href="#"><img src="xray/images/small/flag-02.png" alt="img-flaf" class="img-fluid mr-2" />French</a>
+                                    <a class="iq-sub-card" href="#"><img src="xray/images/small/flag-03.png" alt="img-flaf" class="img-fluid mr-2" />Spanish</a>
+                                    <a class="iq-sub-card" href="#"><img src="xray/images/small/flag-04.png" alt="img-flaf" class="img-fluid mr-2" />Italian</a>
+                                    <a class="iq-sub-card" href="#"><img src="xray/images/small/flag-05.png" alt="img-flaf" class="img-fluid mr-2" />German</a>
+                                    <a class="iq-sub-card" href="#"><img src="xray/images/small/flag-06.png" alt="img-flaf" class="img-fluid mr-2" />Japanese</a>
+                                </div>
+                            </li>
+                            <li class="nav-item iq-full-screen">
+                                <a href="#" class="iq-waves-effect" id="btnFullscreen"><i class="ri-fullscreen-line"></i></a>
+                            </li>
+                            <li class="nav-item">
+                                <a href="#" class="search-toggle iq-waves-effect">
+                                    <i class="ri-notification-3-fill"></i>
+                                    <span class="bg-danger dots"></span>
+                                </a>
+                                <div class="iq-sub-dropdown">
+                                    <div class="iq-card shadow-none m-0">
+                                        <div class="iq-card-body p-0 ">
+                                            <div class="bg-primary p-3">
+                                                <h5 class="mb-0 text-white">All Notifications<small class="badge  badge-light float-right pt-1">4</small></h5>
+                                            </div>
+                                            <a href="#" class="iq-sub-card" >
+                                                <div class="media align-items-center">
+                                                    <div class="">
+                                                        <img class="avatar-40 rounded" src="xray/images/user/01.jpg" alt="">
+                                                    </div>
+                                                    <div class="media-body ml-3">
+                                                        <h6 class="mb-0 ">Emma Watson Bini</h6>
+                                                        <small class="float-right font-size-12">Just Now</small>
+                                                        <p class="mb-0">95 MB</p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <a href="#" class="iq-sub-card" >
+                                                <div class="media align-items-center">
+                                                    <div class="">
+                                                        <img class="avatar-40 rounded" src="xray/images/user/02.jpg" alt="">
+                                                    </div>
+                                                    <div class="media-body ml-3">
+                                                        <h6 class="mb-0 ">New customer is join</h6>
+                                                        <small class="float-right font-size-12">5 days ago</small>
+                                                        <p class="mb-0">Jond Bini</p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <a href="#" class="iq-sub-card" >
+                                                <div class="media align-items-center">
+                                                    <div class="">
+                                                        <img class="avatar-40 rounded" src="xray/images/user/03.jpg" alt="">
+                                                    </div>
+                                                    <div class="media-body ml-3">
+                                                        <h6 class="mb-0 ">Two customer is left</h6>
+                                                        <small class="float-right font-size-12">2 days ago</small>
+                                                        <p class="mb-0">Jond Bini</p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <a href="#" class="iq-sub-card" >
+                                                <div class="media align-items-center">
+                                                    <div class="">
+                                                        <img class="avatar-40 rounded" src="xray/images/user/04.jpg" alt="">
+                                                    </div>
+                                                    <div class="media-body ml-3">
+                                                        <h6 class="mb-0 ">New Mail from Fenny</h6>
+                                                        <small class="float-right font-size-12">3 days ago</small>
+                                                        <p class="mb-0">Jond Bini</p>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="nav-item dropdown">
+                                <a href="#" class="search-toggle iq-waves-effect">
+                                    <i class="ri-mail-open-fill"></i>
+                                    <span class="bg-primary count-mail"></span>
+                                </a>
+                                <div class="iq-sub-dropdown">
+                                    <div class="iq-card shadow-none m-0">
+                                        <div class="iq-card-body p-0 ">
+                                            <div class="bg-primary p-3">
+                                                <h5 class="mb-0 text-white">All Messages<small class="badge  badge-light float-right pt-1">5</small></h5>
+                                            </div>
+                                            <a href="#" class="iq-sub-card" >
+                                                <div class="media align-items-center">
+                                                    <div class="">
+                                                        <img class="avatar-40 rounded" src="xray/images/user/01.jpg" alt="">
+                                                    </div>
+                                                    <div class="media-body ml-3">
+                                                        <h6 class="mb-0 ">Bini Emma Watson</h6>
+                                                        <small class="float-left font-size-12">13 Jun</small>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <a href="#" class="iq-sub-card" >
+                                                <div class="media align-items-center">
+                                                    <div class="">
+                                                        <img class="avatar-40 rounded" src="xray/images/user/02.jpg" alt="">
+                                                    </div>
+                                                    <div class="media-body ml-3">
+                                                        <h6 class="mb-0 ">Lorem Ipsum Watson</h6>
+                                                        <small class="float-left font-size-12">20 Apr</small>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <a href="#" class="iq-sub-card" >
+                                                <div class="media align-items-center">
+                                                    <div class="">
+                                                        <img class="avatar-40 rounded" src="xray/images/user/03.jpg" alt="">
+                                                    </div>
+                                                    <div class="media-body ml-3">
+                                                        <h6 class="mb-0 ">Why do we use it?</h6>
+                                                        <small class="float-left font-size-12">30 Jun</small>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <a href="#" class="iq-sub-card" >
+                                                <div class="media align-items-center">
+                                                    <div class="">
+                                                        <img class="avatar-40 rounded" src="xray/images/user/04.jpg" alt="">
+                                                    </div>
+                                                    <div class="media-body ml-3">
+                                                        <h6 class="mb-0 ">Variations Passages</h6>
+                                                        <small class="float-left font-size-12">12 Sep</small>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                            <a href="#" class="iq-sub-card" >
+                                                <div class="media align-items-center">
+                                                    <div class="">
+                                                        <img class="avatar-40 rounded" src="xray/images/user/05.jpg" alt="">
+                                                    </div>
+                                                    <div class="media-body ml-3">
+                                                        <h6 class="mb-0 ">Lorem Ipsum generators</h6>
+                                                        <small class="float-left font-size-12">5 Dec</small>
+                                                    </div>
+                                                </div>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                    </div>
+                    <ul class="navbar-list">
+                        <li>
+                            <a href="#" class="search-toggle iq-waves-effect d-flex align-items-center">
+                                <img src="xray/images/user/1.jpg" class="img-fluid rounded mr-3" alt="user">
+                                <div class="caption">
+                                    <h6 class="mb-0 line-height" th:text="${myname}"></h6>
+                                </div>
+                            </a>
+                            <div class="iq-sub-dropdown iq-user-dropdown">
+                                <div class="iq-card shadow-none m-0">
+                                    <div class="iq-card-body p-0 ">
+                                        <div class="d-inline-block w-100 text-center p-3">
+                                            <a class="bg-primary iq-sign-btn" href="/signin" role="button">Sign out<i class="ri-login-box-line ml-2"></i></a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+<!-- TOP Nav Bar END -->
+
+<!--空盒子 占位置-->
+<!--<div style="height: 80px;width: 100%">-->
+<!--</div>-->
+
+<!--查询表格-->
+<div style="display:inline-block" class="my-map-table">
+    <div style="display:inline;"class="col-sm-8 col-lg-6">
+        <div  class="iq-card">
+            <!--    标题-->
+            <div class="iq-card-header d-flex justify-content-between">
+                <div class="iq-header-title">
+                    <h4 class="card-title">定位搜索 - Find Position</h4>
+                </div>
+            </div>
+
+            <!--    内容-->
+            <div class="iq-card-body">
+
+                <!--   查找 search -->
+                <div style="margin-left: -15px">
+                    <div class="iq-search-bar">
+                        <form id="search-form" class="searchbox" action="/map">
+                            <input id ="value-search" type="text" name="agencyName" class="text search-input" placeholder="Type here to search...">
+                            <input id="btn-search2" type="image" value="Submit" src="imgs/map-search.jpg" name="map-search-img"
+                                   style="width: 28px;height: 28px; position: absolute;float: right;margin-top: 3px"> <!--必须用jpg格式-->
+                            <!--                        <a class="search-link" href="#"><i class="ri-search-line"></i></a>-->
+                        </form>
+                    </div>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    </button>
+                </div>
+
+                <div class="iq-card">
+                    <ul class="nav nav-tabs justify-content-end" id="myTab-4" role="tablist">
+                        <li class="nav-item" onclick="createPoint(getAgencyData())">
+                            <a class="nav-link active" id="home-tab1-end" data-toggle="tab" href="#home-end" role="tab" aria-controls="home" aria-selected="true">全部</a>
+                        </li>
+                        <li class="nav-item" onclick="createPoint(getAgencySmallData())">
+                            <a class="nav-link" id="home2-tab-end" data-toggle="tab" href="#home2-end" role="tab" aria-controls="home" aria-selected="true">幼儿园</a>
+                        </li>
+                        <li class="nav-item" onclick="createPoint(getAgencyMiddleData())">
+                            <a class="nav-link" id="home3-tab-end" data-toggle="tab" href="#home3-end" role="tab" aria-controls="home" aria-selected="true">中小学</a>
+                        </li>
+                        <li class="nav-item" onclick="createPoint(getAgencyCollegeData())">
+                            <a class="nav-link" id="profile-tab-end" data-toggle="tab" href="#profile-end" role="tab" aria-controls="profile" aria-selected="false">大学</a>
+                        </li>
+                        <li class="nav-item" onclick="createPoint(getAgencyOtherData())">
+                            <a class="nav-link" id="contact-tab-end" data-toggle="tab" href="#contact-end" role="tab" aria-controls="contact" aria-selected="false">其他机构</a>
+                        </li>
+                    </ul>
+
+                    <div class="tab-content" id="myTabContent-5">
+                        <div class="tab-pane fade show active" id="home-end" role="tabpanel" aria-labelledby="home-tab-end">
+                            <!--  table1 -->
+                            <p id="search-p">一共查询到<mark><span th:text="${agencySNum}"></span>个</mark>与<mark><span th:text="${agencySearchName}"></span></mark>有关的机构.</p>
+                            <table id="search-table" class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">机构名称</th>
+                                    <th scope="col">机构地址</th>
+                                    <th scope="col">联系方式</th>
+                                </tr>
+                                </thead>
+                                <tbody id="search-table-tbody">
+                                <tr id="search-table-tr" th:each="agency : ${agency}" onclick="findPosition(this)">
+                                    <th scope="row">[[${agency.agencyID}]]</th>
+                                    <td>[[${agency.agencyName}]]</td>
+                                    <td>[[${agency.agencyAddress}]]</td>
+                                    <td>[[${agency.agencyPhone}]]</td>
+                                    <td style="display: none">[[${agency.agencyX}]]</td>
+                                    <td style="display: none">[[${agency.agencyY}]]</td>
+                                    <td style="display: none">[[${agency.agencyImg}]]</td>
+                                </tr>
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="tab-pane fade" id="home2-end" role="tabpanel" aria-labelledby="home-tab-end">
+                            <!--  table2 -->
+                            <p>一共查询到<mark><span th:text="${smallNum}"></span>个</mark>幼儿园机构.</p>
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">机构名称</th>
+                                    <th scope="col">机构地址</th>
+                                    <th scope="col">联系方式</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="agencySmall : ${agencySmall}" onclick="findPosition(this)">
+                                    <th scope="row">[[${agencySmall.agencyID}]]</th>
+                                    <td>[[${agencySmall.agencyName}]]</td>
+                                    <td>[[${agencySmall.agencyAddress}]]</td>
+                                    <td>[[${agencySmall.agencyPhone}]]</td>
+                                    <td style="display: none">[[${agencySmall.agencyX}]]</td>
+                                    <td style="display: none">[[${agencySmall.agencyY}]]</td>
+                                    <td style="display: none">[[${agencySmall.agencyImg}]]</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="tab-pane fade" id="home3-end" role="tabpanel" aria-labelledby="home-tab-end">
+                            <!--  table3 -->
+                            <p>一共查询到<mark><span th:text="${middleNum}"></span>个</mark>中小学机构.</p>
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">机构名称</th>
+                                    <th scope="col">机构地址</th>
+                                    <th scope="col">联系方式</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="agencyMiddle : ${agencyMiddle}" onclick="findPosition(this)">
+                                    <th scope="row">[[${agencyMiddle.agencyID}]]</th>
+                                    <td>[[${agencyMiddle.agencyName}]]</td>
+                                    <td>[[${agencyMiddle.agencyAddress}]]</td>
+                                    <td>[[${agencyMiddle.agencyPhone}]]</td>
+                                    <td style="display: none">[[${agencyMiddle.agencyX}]]</td>
+                                    <td style="display: none">[[${agencyMiddle.agencyY}]]</td>
+                                    <td style="display: none">[[${agencyMiddle.agencyImg}]]</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <div class="tab-pane fade" id="profile-end" role="tabpanel" aria-labelledby="profile-tab-end">
+                            <!--  table3 -->
+                            <p>一共查询到<mark><span th:text="${collegeNum}"></span>个</mark>大学机构.</p>
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">机构名称</th>
+                                    <th scope="col">机构地址</th>
+                                    <th scope="col">联系方式</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="agencyCollege : ${agencyCollege}" onclick="findPosition(this)">
+                                    <th scope="row">[[${agencyCollege.agencyID}]]</th>
+                                    <td>[[${agencyCollege.agencyName}]]</td>
+                                    <td>[[${agencyCollege.agencyAddress}]]</td>
+                                    <td>[[${agencyCollege.agencyPhone}]]</td>
+                                    <td style="display: none">[[${agencyCollege.agencyX}]]</td>
+                                    <td style="display: none">[[${agencyCollege.agencyY}]]</td>
+                                    <td style="display: none">[[${agencyCollege.agencyImg}]]</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="tab-pane fade" id="contact-end" role="tabpanel" aria-labelledby="contact-tab-end">
+                            <!--  table4 -->
+                            <p>一共查询到<mark><span th:text="${otherNum}"></span>个</mark>校外独立机构.</p>
+                            <table class="table table-hover">
+                                <thead>
+                                <tr>
+                                    <th scope="col">#</th>
+                                    <th scope="col">机构名称</th>
+                                    <th scope="col">机构地址</th>
+                                    <th scope="col">联系方式</th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                <tr th:each="agencyOther : ${agencyOther}" onclick="findPosition(this)">
+                                    <th scope="row">[[${agencyOther.agencyID}]]</th>
+                                    <td>[[${agencyOther.agencyName}]]</td>
+                                    <td>[[${agencyOther.agencyAddress}]]</td>
+                                    <td>[[${agencyOther.agencyPhone}]]</td>
+                                    <td style="display: none">[[${agencyOther.agencyX}]]</td>
+                                    <td style="display: none">[[${agencyOther.agencyY}]]</td>
+                                    <td style="display: none">[[${agencyOther.agencyImg}]]</td>
+                                </tr>
+
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--地图  请勿在此div外添加div-->
+<div style="display:inline-block;height: 800px;" id="container"></div>
+
+    </div></div>
+
+<!--从后台获取agency的数据-->
+<script th:inline="javascript">
+
+    function getAgencyData() {
+        let agencyData = [[${agency}]]; console.log("从后台获取的data："+ agencyData);
+        return agencyData;
+    }
+
+    function getAgencySmallData(){
+        let agencySmallData = [[${agencySmall}]]; console.log("从后台获取的data："+ agencySmallData);
+        return agencySmallData;
+    }
+
+    function getAgencyMiddleData(){
+        let agencyMiddleData = [[${agencyMiddle}]]; console.log("从后台获取的data："+ agencyMiddleData);
+        return agencyMiddleData;
+    }
+
+    function getAgencyCollegeData(){
+        let agencyCollegeData = [[${agencyCollege}]]; console.log("从后台获取的data："+ agencyCollegeData);
+        return agencyCollegeData;
+    }
+
+    function getAgencyOtherData(){
+        let agencyOtherData = [[${agencyOther}]]; console.log("从后台获取的data："+ agencyOtherData);
+        return agencyOtherData;
+    }
+
+</script>
+
+<!--地图js样式-->
+<script type="text/javascript">
+    // 创建地图实例
+    var map = new BMapGL.Map("container");
+
+    // 创建点坐标
+    var centerpoint = new BMapGL.Point(116.404, 39.915);
+
+    // 初始化地图，设置中心点坐标和地图级别
+    map.centerAndZoom(centerpoint, 15);
+
+    //开启滚轮缩放地图
+    map.enableScrollWheelZoom(true);
+
+    //版权控件remove有问题
+    var scaleCtrl = new BMapGL.ScaleControl();  // 添加比例尺控件
+    map.addControl(scaleCtrl);
+    var zoomCtrl = new BMapGL.ZoomControl();  // 添加缩放控件
+    map.addControl(zoomCtrl);
+
+
+    //初始化所有坐标
+    window.onload=function() {
+        //获取点坐标数据
+        var mapInfo = getAgencyData();
+        createPoint(mapInfo);
+    }
+
+
+    //点击单个数据，找到地理位置
+    function findPosition(x){
+        console.log("调用findPosition");
+        let tr = x.childNodes;
+        let posX;let posY;let posName;let posAdd;let posImg;let posID;
+
+        for(var i=0;i<tr.length;i++){
+            // console.log(tr[i]);
+            if(tr[i].innerHTML!=undefined) {
+                switch (i) {
+                    case 1:
+                        posID = tr[i].innerHTML;
+                        console.log("posID:" + posID);
+                        break;
+                    case 3:
+                        posName = tr[i].innerHTML;
+                        console.log("posName:" + posName);
+                        break;
+                    case 5:
+                        posAdd = tr[i].innerHTML;
+                        console.log("posAdd:" + posAdd);
+                        break;
+                    case 9:
+                        posX = tr[i].innerHTML;
+                        console.log("posX:" + posX);
+                        break;
+                    case 11:
+                        posY = tr[i].innerHTML;
+                        console.log("posY:" + posY);
+                        break;
+                    case 13:
+                        posImg = tr[i].innerHTML;
+                        console.log("posImg:" + posImg);
+                        break;
+                    default:
+                        console.log(tr[i].innerHTML);
+                        break;
+                }
+            }
+
+
+        }
+        setMyMarker(posName,posAdd,posImg,posX,posY,posID);
+
+    }
+
+    //搜索重定位
+    function flushPosition(x){
+        console.log("调用flushPositon函数");
+        let tr = x.childNodes;
+        let posX;let posY;let posName;let posAdd;let posImg;let posID;
+
+        for(var i=0;i<tr.length;i++){
+            // console.log(tr[i]);
+            if(tr[i].innerHTML!=undefined) {
+                switch (i) {
+                    case 1:
+                        posID = tr[i].innerHTML;
+                        console.log("posID:" + posID);
+                        break;
+                    case 3:
+                        posName = tr[i].innerHTML;
+                        console.log("posName:" + posName);
+                        break;
+                    case 5:
+                        posAdd = tr[i].innerHTML;
+                        console.log("posAdd:" + posAdd);
+                        break;
+                    case 9:
+                        posX = tr[i].innerHTML;
+                        console.log("posX:" + posX);
+                        break;
+                    case 11:
+                        posY = tr[i].innerHTML;
+                        console.log("posY:" + posY);
+                        break;
+                    case 13:
+                        posImg = tr[i].innerHTML;
+                        console.log("posImg:" + posImg);
+                        break;
+                    default:
+                        console.log(i + ":" + tr[i].innerHTML);
+                        break;
+                }
+            }
+
+        }
+        setMyMarker(posName,posAdd,posImg,posX,posY,posID);
+
+    }
+
+    //根据位置、名称创建点坐标
+    function setMyMarker(posName,posAdd,posImg,posX,posY,posID) {
+        let findX=posX;
+        let findY=posY;
+        let findName = posName;
+        let findAdd = posAdd;
+        let findImg= posImg;
+        let point = new BMapGL.Point(findX,findY);
+        let marker = new BMapGL.Marker(point);  // 创建标注
+        // alert("posID:"+posID);
+
+        map.clearOverlays();                //清除其他覆盖物
+        map.addOverlay(marker);              // 将标注添加到地图中
+
+
+        // 创建信息窗口
+        let opts = {
+            width : 200,     // 信息窗口宽度
+            height: 100,     // 信息窗口高度
+            title : findName , // 信息窗口标题
+        }
+
+        var html = "<div class='box' style='width:100%;'>" +
+            "<div id='left' style='float:left;'>" + findAdd+ "</div>"+
+            "<div id='right' style='float:right;'>"+
+            "<img onload='imgLoad()' src='"  + findImg +  "' width='80px'/>" +
+            "</div>"+
+            "<span style='position: absolute;bottom:8%;left:0%'>" +
+            "<a href='/agency-detail?agencyID="   +posID+  "'>查看详细信息</a>" +
+            "</span>"
+        "</div>";
+
+
+        map.setCenter(point);//更改地图中心点
+
+        let infoWindow = new BMapGL.InfoWindow(html, opts);  // 创建信息窗口对象
+        map.openInfoWindow(infoWindow, point); //开启信息窗口
+
+        function imgLoad(){
+            infoWindow.redraw();
+        }
+    }
+
+    //设置坐标
+    function createPoint(mapInfo) {
+        map.clearOverlays();                //清除其他覆盖物
+        for(var i=0;i<mapInfo.length;i++) {
+            // console.log(mapInfo[i].agencyX);
+            let point = new BMapGL.Point(mapInfo[i].agencyX,mapInfo[i].agencyY);
+            let marker = new BMapGL.Marker(point);  // 创建标注
+            map.addOverlay(marker);              // 将标注添加到地图中
+
+
+            // 创建信息窗口
+            let opts = {
+                width : 200,     // 信息窗口宽度
+                height: 100,     // 信息窗口高度
+                title : mapInfo[i].agencyName , // 信息窗口标题
+            }
+
+            var html = "<div class='box' style='width:100%;'>" +
+                "<div id='left' style='float:left;'>" + mapInfo[i].agencyAddress+ "</div>"+
+                "<div id='right' style='float:right;'>"+
+                "<img onload='imgLoad()' src='"  + mapInfo[i].agencyImg+  "' width='80px'/>" +
+                "</div>"+
+                "<span style='position: absolute;bottom:8%;left:0%'><a href='/agency-detail?agencyID="   +mapInfo[i].agencyID+  "'>查看详细信息</a></span>"
+            "</div>";
+
+            map.centerAndZoom(centerpoint, 13);
+            let infoWindow = new BMapGL.InfoWindow(html, opts);  // 创建信息窗口对象
+            marker.addEventListener("click", function(){
+                map.openInfoWindow(infoWindow, point); //开启信息窗口
+            });
+            function imgLoad(){
+                infoWindow.redraw();
+            }
+        }
+    }
+
+</script>
+
+<!--搜索 ajax获取值 -->
+<script>
+    $("#btn-search").click(function(){
+
+        //获取搜索关键字
+        let keyWord = $("#value-search").val();
+        // alert("获取的关键字是"+keyWord);
+
+
+        $.ajax({
+            url:"/map/queryName",
+            data :{
+                agencyName:keyWord,
+            },
+            type : "POST",
+            dataType: "json",
+
+            success: function(res) {
+                //解析json数据
+                var data = res;
+                console.log(data.agencyList);
+                console.log(data.agencyList[0].agencyName);
+
+                var str = "";//把数据组装起来
+                var searchP =" <p>一共查询到<mark><span>"+data.agencyList.length+"</span>个</mark>与<mark><span>"+keyWord+"</span></mark>有关的机构.</p>";
+                var strHead=" <table id='search-table' class='table table-hover'>\n" +
+                    "            <thead>\n" +
+                    "            <tr>\n" +
+                    "            <th scope='col'>#</th>\n" +
+                    "            <th scope='col'>机构名称</th>\n" +
+                    "            <th scope='col'>机构地址</th>\n" +
+                    "            <th scope='col'>联系方式</th>\n" +
+                    "            </tr>\n" +
+                    "            </thead>";
+                var strEnd="</table>"
+
+                for (var j = 0; j < data.agencyList.length; j++) {
+                    str +=
+                        "<tbody id='search-table-tbody'>\n"+
+                        "<tr id='search-table-tr' onclick='flushPosition(this)'>\n" +
+                        "<th scope='row'>" + data.agencyList[j].agencyID +
+                        "</th>\n<td>" + data.agencyList[j].agencyName +
+                        "</td>\n<td>" + data.agencyList[j].agencyAddress +
+                        "</td>\n<td>" + data.agencyList[j].agencyPhone +
+                        "</td>\n<td style='display: none'>" + data.agencyList[j].agencyX +
+                        "</td>\n<td style='display: none'>" + data.agencyList[j].agencyY +
+                        "</td>\n<td style='display: none'>" + data.agencyList[j].agencyImg +
+                        "</td>\n</tr></tbody>\n";
+                }
+                console.log(strHead+str+strEnd);
+                $("#search-table").html(strHead+str+strEnd);//把拼好的样式填到指定的位置
+                $("#search-p").html(searchP); //拼好机构的总数目
+
+                //找到 查到的机构 并 进行标记
+                var mapInfo = data.agencyList;
+                createPoint(mapInfo);
+            }
+        });
+    });
+
+</script>
+
+
+
+
+<!-- Optional JavaScript -->
+<!-- jQuery first, then Popper.js, then Bootstrap JS -->
+<!--<script src="xray/js/jquery.min.js"></script>   在前面已经引用，为了使用ajax-->
+<script src="xray/js/popper.min.js"></script>
+<script src="xray/js/bootstrap.min.js"></script>
+<!-- Appear JavaScript -->
+<script src="xray/js/jquery.appear.js"></script>
+<!-- Countdown JavaScript -->
+<script src="xray/js/countdown.min.js"></script>
+<!-- Counterup JavaScript -->
+<script src="xray/js/waypoints.min.js"></script>
+<script src="xray/js/jquery.counterup.min.js"></script>
+<!-- Wow JavaScript -->
+<script src="xray/js/wow.min.js"></script>
+<!-- Apexcharts JavaScript -->
+<script src="xray/js/apexcharts.js"></script>
+<!-- Slick JavaScript -->
+<script src="xray/js/slick.min.js"></script>
+<!-- Select2 JavaScript -->
+<script src="xray/js/select2.min.js"></script>
+<!-- Owl Carousel JavaScript -->
+<script src="xray/js/owl.carousel.min.js"></script>
+<!-- Magnific Popup JavaScript -->
+<script src="xray/js/jquery.magnific-popup.min.js"></script>
+<!-- Smooth Scrollbar JavaScript -->
+<script src="xray/js/smooth-scrollbar.js"></script>
+<!-- lottie JavaScript -->
+<script src="xray/js/lottie.js"></script>
+<!-- Chart Custom JavaScript -->
+<script src="xray/js/chart-custom.js"></script>
+<!-- Custom JavaScript -->
+<script src="xray/js/custom.js"></script>
+</body>
+</html>

@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>登陆失败</title>
+
+    <style>
+        .my-mouse-img {
+            position: absolute;
+            z-index: 999;
+        }
+    </style>
+</head>
+<body>
+<img class="my-mouse-img" src="imgs/mouse-logo.jpg" alt="" width="60px">
+<script>
+    document.addEventListener('mousemove', function (e) {
+        //鼠标只要移动,就会触发事件
+        var x = e.pageX;
+        var y = e.pageY;
+        var pic = document.querySelector('img');
+        pic.style.left = x-20+'px';
+        pic.style.top = y-40+'px';
+    })
+</script>
+
+<h1>登陆失败</h1>
+</body>
+</html>

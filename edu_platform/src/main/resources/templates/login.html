@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>登录页面</title>
+  <!-- <link rel="stylesheet" type="text/css" th:href="@{../../static/css/Login.css}" />-->
+  <!--<script type="text/javascript" src="../../static/js/jquery-1.11.3.min.js"></script>-->
+  <style>
+    #s1{
+      float: left;
+      margin: 50px 0px 0px 100px;
+    }
+    #s2{
+      float: left;
+      margin: 50px 0px 0px 50px;
+    }
+  </style>
+
+  <style>
+    .my-mouse-img {
+      position: absolute;
+      z-index: 999;
+    }
+  </style>
+
+</head>
+<body>
+
+<img class="my-mouse-img" src="imgs/mouse-logo.jpg" alt="" width="60px">
+<script>
+  document.addEventListener('mousemove', function (e) {
+    //鼠标只要移动,就会触发事件
+    var x = e.pageX;
+    var y = e.pageY;
+    var pic = document.querySelector('img');
+    pic.style.left = x-20+'px';
+    pic.style.top = y-40+'px';
+  })
+</script>
+
+<div>
+  <form action="/result" method="get" onsubmit="return subForm()">
+    <table>
+      <tr>
+        <td><span>用户名：</span></td>
+        <td><input id="username" type="text" name="username" placeholder="请输入1-5个汉字" ><span id="d1"></span></td>
+      </tr>
+      <tr>
+        <td>
+          <span>密码：</span>
+        </td>
+        <td><input id="password" type="text" name="password" placeholder="请输入5-12个字母或数字" ><span id="d2"></span></td>
+      </tr>
+    </table>
+    <input id="s1" type="submit" value="登录">
+  </form>
+  <form action="/register" method="get" >
+    <input id="s2" type="submit" value="注册" onclick="zhuCe()">
+  </form>
+</div>
+</body>
+</html>
