@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="55dp"
+    android:background="@color/colorPrimary"
+    >
+    <Button
+        android:id="@+id/book_insert_bym"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="增添"
+        ></Button>
+    <TextView
+        android:id="@+id/db_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="数据库增删改查2"
+        android:layout_centerInParent="true"
+        android:textColor="@android:color/white"
+        android:textSize="25dp"
+        />
+
+</RelativeLayout>

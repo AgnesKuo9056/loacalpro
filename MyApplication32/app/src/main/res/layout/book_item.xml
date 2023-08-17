@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="10dp"
+
+
+>
+
+    <LinearLayout
+        android:id="@+id/text_left"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_marginLeft="10dp"
+        >
+
+        <TextView
+            android:id="@+id/book_bname"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="中华文化"
+            android:textSize="30dp"
+            android:textStyle="bold">
+        </TextView>
+
+        <TextView
+            android:id="@+id/book_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="类型:"
+            android:textSize="20dp">
+        </TextView>
+
+        <TextView
+            android:id="@+id/book_course"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="课程:"
+            android:textSize="20dp">
+        </TextView>
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:layout_alignParentRight="true"
+        >
+
+        <Button
+            android:id="@+id/book_change_btm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="修改">
+        </Button>
+
+        <Button
+            android:id="@+id/book_delete_btm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="删除"></Button>
+
+
+    </LinearLayout>
+</RelativeLayout>
