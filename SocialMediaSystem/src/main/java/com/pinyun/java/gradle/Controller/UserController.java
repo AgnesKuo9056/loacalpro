@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
 @RestController
 @RequestMapping("/api")
 public class UserController {
@@ -29,26 +28,13 @@ public class UserController {
         }
     }
 
-
-    @Autowired
-    private AuthenticationManager authenticationManager;
-
-    @Autowired
-    private JwtTokenProvider jwtTokenProvider;
-
     @PostMapping("/login")
-    public ResponseEntity<Map<String, String>> loginUser(@RequestBody AuthenticationRequest request) {
+    public ResponseEntity<String> loginUser(@RequestBody User user) {
         try {
-            authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(
-                    request.getUsername(), request.getPassword()));
-
-            String token = jwtTokenProvider.createToken(request.getUsername());
-            Map<String, String> response = new HashMap<>();
-            response.put("token", token);
-
-            return ResponseEntity.ok(response);
-        } catch (AuthenticationException e) {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            userService.loginUser(user);
+            return ResponseEntity.ok("Login successful");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Login failed");
         }
     }
 }

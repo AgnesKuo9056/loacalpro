@@ -24,6 +24,7 @@ public class Comment {
     private String content;
 
 
+    public Comment(){}
     public Comment(Long commentId, User user, Post post, String content) {
         this.commentId = commentId;
         this.user = user;

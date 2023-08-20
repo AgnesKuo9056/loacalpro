@@ -16,9 +16,6 @@ import java.util.Map;
 public class SocialMediaApplication {
     private static final String SPRING_PROFILE_DEFAULT = "spring.profiles.default";
 
-    /**
-     * dev:开发、qa:测试、pre:预发、prod:生产；为空则默认读取“application.yml”
-     */
     private static final String PROFILE = "";
 
     private static void addDefaultProfile(SpringApplication app) {

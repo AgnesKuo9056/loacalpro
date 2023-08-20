@@ -24,7 +24,7 @@ public class Post {
     @OneToMany(mappedBy = "post", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
-
+    public Post(){}
     public Post(Long postId, User user, String content, List<Comment> comments) {
         this.postId = postId;
         this.user = user;
